@@ -1,117 +1,201 @@
 <template>
-    <header class="header-global">
-        <base-nav class="navbar-main" transparent type="" effect="light" expand>
-            <router-link slot="brand" class="navbar-brand mr-lg-5" to="/">
-                <img src="img/brand/white.png" alt="logo">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-gradient-primary shadow-sm py-2"
+  >
+    <div class="container">
+      <router-link
+        class="navbar-brand font-weight-bold d-flex align-items-center"
+        to="/"
+      >
+        <img
+          src="https://img.icons8.com/color/48/000000/rocket--v2.png"
+          alt="Logo"
+          class="mr-2"
+          style="height: 32px"
+        />
+        <span v-if="user && (user.first_name || user.last_name)">
+          {{ user.first_name || user.last_name }}
+        </span>
+        <span v-else> Invité </span>
+      </router-link>
+      <button
+        class="navbar-toggler"
+        type="button"
+        @click="toggleNavbar"
+        :aria-expanded="navbarOpen ? 'true' : 'false'"
+        aria-controls="navbarNav"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse"
+        :class="{ show: navbarOpen }"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav ml-auto align-items-center">
+          <li class="nav-item" :class="{ active: $route.name === 'home' }">
+            <router-link class="nav-link" to="/">
+              <i class="ni ni-shop"></i> Accueil
             </router-link>
-
-            <div class="row" slot="content-header" slot-scope="{closeMenu}">
-                <div class="col-6 collapse-brand">
-                    <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
-                        <img src="img/brand/blue.png">
-                    </a>
-                </div>
-                <div class="col-6 collapse-close">
-                    <close-button @click="closeMenu"></close-button>
-                </div>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/albums">
+              <i class="ni ni-album-2"></i> Gérer les albums
+            </router-link>
+          </li>
+          <li class="nav-item dropdown" :class="{ show: dropdownOpen }">
+            <a
+              class="nav-link dropdown-toggle d-flex align-items-center"
+              href="#"
+              id="navbarProfileDropdown"
+              role="button"
+              @click.prevent="toggleDropdown"
+              :aria-expanded="dropdownOpen ? 'true' : 'false'"
+              aria-haspopup="true"
+            >
+              <img
+                :src="userPhoto || defaultAvatar"
+                alt="Avatar"
+                class="rounded-circle mr-2"
+                style="
+                  width: 32px;
+                  height: 32px;
+                  object-fit: cover;
+                  border: 2px solid #fff;
+                "
+              />
+              <span>
+                {{
+                  user && (user.first_name || user.last_name)
+                    ? user.first_name || user.last_name
+                    : "Profil"
+                }}
+              </span>
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+              :class="{ show: dropdownOpen }"
+              aria-labelledby="navbarProfileDropdown"
+            >
+              <router-link
+                class="dropdown-item"
+                to="/profile"
+                @click.native="closeDropdown"
+              >
+                <i class="ni ni-single-02 text-primary"></i> Mon Profil
+              </router-link>
+              <router-link
+                class="dropdown-item"
+                to="/settings"
+                @click.native="closeDropdown"
+              >
+                <i class="ni ni-settings-gear-65 text-info"></i> Paramètres
+              </router-link>
+              <div class="dropdown-divider"></div>
+              <a
+                class="dropdown-item text-danger"
+                href="#"
+                @click.prevent="logoutAndCloseDropdown"
+              >
+                <i class="ni ni-user-run"></i> Déconnexion
+              </a>
             </div>
-
-            <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
-                <base-dropdown class="nav-item" menu-classes="dropdown-menu-xl">
-                    <a slot="title" href="#" class="nav-link" data-toggle="dropdown" role="button">
-                        <i class="ni ni-ui-04 d-lg-none"></i>
-                        <span class="nav-link-inner--text">Components</span>
-                    </a>
-                    <div class="dropdown-menu-inner">
-                        <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/"
-                           class="media d-flex align-items-center">
-                            <div class="icon icon-shape bg-gradient-primary rounded-circle text-white">
-                                <i class="ni ni-spaceship"></i>
-                            </div>
-                            <div class="media-body ml-3">
-                                <h6 class="heading text-primary mb-md-1">Getting started</h6>
-                                <p class="description d-none d-md-inline-block mb-0">Get started with Bootstrap, the
-                                    world's most popular framework for building responsive sites.</p>
-                            </div>
-                        </a>
-                        <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/"
-                           class="media d-flex align-items-center">
-                            <div class="icon icon-shape bg-gradient-warning rounded-circle text-white">
-                                <i class="ni ni-ui-04"></i>
-                            </div>
-                            <div class="media-body ml-3">
-                                <h5 class="heading text-warning mb-md-1">Components</h5>
-                                <p class="description d-none d-md-inline-block mb-0">Learn how to use Argon
-                                    compiling Scss, change brand colors and more.</p>
-                            </div>
-                        </a>
-                    </div>
-                </base-dropdown>
-                <base-dropdown tag="li" class="nav-item">
-                    <a slot="title" href="#" class="nav-link" data-toggle="dropdown" role="button">
-                        <i class="ni ni-collection d-lg-none"></i>
-                        <span class="nav-link-inner--text">Examples</span>
-                    </a>
-                    <router-link to="/landing" class="dropdown-item">Landing</router-link>
-                    <router-link to="/profile" class="dropdown-item">Profile</router-link>
-                    <router-link to="/login" class="dropdown-item">Login</router-link>
-                    <router-link to="/register" class="dropdown-item">Register</router-link>
-                </base-dropdown>
-            </ul>
-            <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-                <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://www.facebook.com/creativetim" target="_blank" rel="noopener"
-                       data-toggle="tooltip" title="Like us on Facebook">
-                        <i class="fa fa-facebook-square"></i>
-                        <span class="nav-link-inner--text d-lg-none">Facebook</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://www.instagram.com/creativetimofficial"
-                       target="_blank" rel="noopener" data-toggle="tooltip" title="Follow us on Instagram">
-                        <i class="fa fa-instagram"></i>
-                        <span class="nav-link-inner--text d-lg-none">Instagram</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://twitter.com/creativetim" target="_blank" rel="noopener"
-                       data-toggle="tooltip" title="Follow us on Twitter">
-                        <i class="fa fa-twitter-square"></i>
-                        <span class="nav-link-inner--text d-lg-none">Twitter</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="https://github.com/creativetimofficial/vue-argon-design-system"
-                       target="_blank" rel="noopener" data-toggle="tooltip" title="Star us on Github">
-                        <i class="fa fa-github"></i>
-                        <span class="nav-link-inner--text d-lg-none">Github</span>
-                    </a>
-                </li>
-                <li class="nav-item d-none d-lg-block ml-lg-4">
-                    <a href="https://www.creative-tim.com/product/vue-argon-design-system" target="_blank" rel="noopener"
-                       class="btn btn-neutral btn-icon">
-                <span class="btn-inner--icon">
-                  <i class="fa fa-cloud-download mr-2"></i>
-                </span>
-                        <span class="nav-link-inner--text">Download</span>
-                    </a>
-                </li>
-            </ul>
-        </base-nav>
-    </header>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </template>
+
 <script>
-import BaseNav from "@/components/BaseNav";
-import BaseDropdown from "@/components/BaseDropdown";
-import CloseButton from "@/components/CloseButton";
+import { mapGetters } from "vuex";
+import RequestService from "@/tools/requestService";
 
 export default {
-  components: {
-    BaseNav,
-    CloseButton,
-    BaseDropdown
-  }
+  name: "AppHeader",
+  computed: {
+    ...mapGetters(["currentUser"]),
+
+    user() {
+      return this.currentUser;
+    },
+    defaultAvatar() {
+      if (this.user && (this.user.first_name || this.user.last_name)) {
+        return (
+          "https://ui-avatars.com/api/?name=" +
+          encodeURIComponent(this.user.first_name || this.user.last_name)
+        );
+      }
+      return "https://ui-avatars.com/api/?name=Profil";
+    },
+  },
+  data() {
+    return {
+      userPhoto: "",
+      navbarOpen: false,
+      dropdownOpen: false,
+    };
+  },
+  watch: {
+    user: {
+      handler() {
+        this.loadUserPhoto();
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.handleClickOutside);
+  },
+  methods: {
+    async logout() {
+      // Use Vuex logout and redirect, with toast
+      if (this.$store && this.$store.dispatch) {
+        await this.$store.dispatch("clearAuth");
+      }
+      this.$router.replace({ name: "login" });
+      if (this.$toast && this.$toast.success) {
+        this.$toast.success("Déconnexion réussie !");
+      }
+    },
+    async logoutAndCloseDropdown() {
+      this.dropdownOpen = false;
+      await this.logout();
+    },
+    async loadUserPhoto() {
+      if (this.user && this.user.id) {
+        try {
+          const response = await RequestService.userPicture(this.user.id);
+          this.userPhoto = response;
+        } catch (e) {
+          this.userPhoto = "";
+        }
+      } else {
+        this.userPhoto = "";
+      }
+    },
+    toggleNavbar() {
+      this.navbarOpen = !this.navbarOpen;
+    },
+    toggleDropdown(event) {
+      this.dropdownOpen = !this.dropdownOpen;
+    },
+    closeDropdown() {
+      this.dropdownOpen = false;
+    },
+    handleClickOutside(event) {
+      // Close dropdown if click outside
+      if (this.dropdownOpen && this.$el && !this.$el.contains(event.target)) {
+        this.dropdownOpen = false;
+      }
+    },
+  },
 };
 </script>
-<style>
+<style scoped>
+/* You can add custom styles here if needed */
 </style>

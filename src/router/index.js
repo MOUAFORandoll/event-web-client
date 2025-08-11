@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 import store from "@/store";
-import AppHeader from "./layout/AppHeader";
-import AppFooter from "./layout/AppFooter";
+import AppHeader from "../layout/AppHeader";
+import AppFooter from "../layout/AppFooter";
 
 Vue.use(Router);
 
@@ -11,24 +11,26 @@ const router = new Router({
   linkExactActiveClass: "active",
   routes: [
     {
-      path: "/",
+      path: "/argon",
       name: "components",
       meta: { title: "Components" },
       components: {
         header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "components" */ "./views/Components.vue"),
+          import(
+            /* webpackChunkName: "components" */ "../views/Components.vue"
+          ),
         footer: AppFooter,
       },
     },
     {
-      path: "/home",
+      path: "/",
       name: "home",
       meta: { title: "Home", requiresAuth: true },
       components: {
         header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "components" */ "./views/Home.vue"),
+          import(/* webpackChunkName: "home" */ "../views/Home.vue"),
         footer: AppFooter,
       },
     },
@@ -39,7 +41,7 @@ const router = new Router({
       components: {
         header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "landing" */ "./views/Landing.vue"),
+          import(/* webpackChunkName: "landing" */ "../views/Landing.vue"),
         footer: AppFooter,
       },
     },
@@ -48,8 +50,9 @@ const router = new Router({
       name: "login",
       meta: { title: "Login" },
       components: {
+        // header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "login" */ "./views/Login.vue"),
+          import(/* webpackChunkName: "login" */ "../views/Login.vue"),
         footer: AppFooter,
       },
     },
@@ -58,9 +61,9 @@ const router = new Router({
       name: "register",
       meta: { title: "Register" },
       components: {
-        header: AppHeader,
+        // header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "register" */ "./views/Register.vue"),
+          import(/* webpackChunkName: "register" */ "../views/Register.vue"),
         footer: AppFooter,
       },
     },
@@ -71,7 +74,7 @@ const router = new Router({
       components: {
         header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "profile" */ "./views/Profile.vue"),
+          import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
         footer: AppFooter,
       },
     },
@@ -82,7 +85,7 @@ const router = new Router({
       components: {
         header: AppHeader,
         default: () =>
-          import(/* webpackChunkName: "not-found" */ "./views/NotFound.vue"),
+          import(/* webpackChunkName: "not-found" */ "../views/NotFound.vue"),
         footer: AppFooter,
       },
     },
@@ -103,8 +106,15 @@ router.beforeEach((to, from, next) => {
   const nearestWithTitle = [...to.matched]
     .reverse()
     .find((r) => r.meta && r.meta.title);
-  if (nearestWithTitle) {
-    document.title = nearestWithTitle.meta.title + " - Vue Argon";
+
+  if (
+    nearestWithTitle &&
+    nearestWithTitle.meta &&
+    nearestWithTitle.meta.title
+  ) {
+    document.title = nearestWithTitle.meta.title;
+  } else {
+    document.title = "My Album";
   }
   if (requiresAuth && !store.getters.isAuthenticated) {
     next({ name: "login", query: { redirect: to.fullPath } });

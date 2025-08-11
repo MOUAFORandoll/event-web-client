@@ -17,13 +17,17 @@
 */
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
+import router from "./router/index";
+import store from "./store";
 import Argon from "./plugins/argon-kit";
-import './registerServiceWorker'
+import ToastPlugin from "./plugins/toast";
+import "./registerServiceWorker";
 
 Vue.config.productionTip = false;
 Vue.use(Argon);
+Vue.use(ToastPlugin, { store });
 new Vue({
   router,
-  render: h => h(App)
+  store,
+  render: (h) => h(App),
 }).$mount("#app");
