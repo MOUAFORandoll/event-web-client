@@ -40,8 +40,8 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/albums">
-              <i class="ni ni-album-2"></i> Gérer les albums
+            <router-link class="nav-link" to="/my-event">
+              <i class="ni ni-album-2"></i> Gérer mes Événements
             </router-link>
           </li>
           <li class="nav-item dropdown" :class="{ show: dropdownOpen }">
@@ -55,7 +55,7 @@
               aria-haspopup="true"
             >
               <img
-                :src="userPhoto || defaultAvatar"
+                :src="userPhoto"
                 alt="Avatar"
                 class="rounded-circle mr-2"
                 style="
@@ -111,6 +111,7 @@
 <script>
 import { mapGetters } from "vuex";
 import RequestService from "@/tools/requestService";
+import API_ENDPOINTS from "@/tools/endPoints";
 
 export default {
   name: "AppHeader",
@@ -119,15 +120,6 @@ export default {
 
     user() {
       return this.currentUser;
-    },
-    defaultAvatar() {
-      if (this.user && (this.user.first_name || this.user.last_name)) {
-        return (
-          "https://ui-avatars.com/api/?name=" +
-          encodeURIComponent(this.user.first_name || this.user.last_name)
-        );
-      }
-      return "https://ui-avatars.com/api/?name=Profil";
     },
   },
   data() {
@@ -168,12 +160,15 @@ export default {
     },
     async loadUserPhoto() {
       if (this.user && this.user.id) {
-        try {
-          const response = await RequestService.userPicture(this.user.id);
-          this.userPhoto = response;
-        } catch (e) {
-          this.userPhoto = "";
-        }
+        this.userPhoto =
+          process.env.VUE_APP_BASE_URL +
+          API_ENDPOINTS.USERS +
+          "/" +
+          this.user.id +
+          "/" +
+          "picture";
+
+        console.log(this.userPhoto);
       } else {
         this.userPhoto = "";
       }

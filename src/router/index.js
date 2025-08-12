@@ -35,6 +35,28 @@ const router = new Router({
       },
     },
     {
+      path: "/my-event",
+      name: "my event",
+      meta: { title: "My Event", requiresAuth: true },
+      components: {
+        header: AppHeader,
+        default: () =>
+          import(/* webpackChunkName: "home" */ "../views/MyEvent.vue"),
+        footer: AppFooter,
+      },
+    },
+    {
+      path: "/my-event/:id",
+      name: "my event",
+      meta: { title: "My Event", requiresAuth: true },
+      components: {
+        header: AppHeader,
+        default: () =>
+          import(/* webpackChunkName: "home" */ "../views/SelectedEvent.vue"),
+        footer: AppFooter,
+      },
+    },
+    {
       path: "/landing",
       name: "landing",
       meta: { title: "Landing" },

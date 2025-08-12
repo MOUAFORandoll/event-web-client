@@ -33,7 +33,16 @@ const RequestService = {
    * @returns {Promise}
    */
   userPicture(id) {
-    return apiRequest(API_ENDPOINTS.USERS + "/" + id + "picture", "get");
+    return apiRequest(API_ENDPOINTS.USERS + "/" + id + "/" + "picture", "get");
+  },
+
+  /**
+   * Requête d'inscription utilisateur
+   * @param {Object} userData - { email, password, ... }
+   * @returns {Promise}
+   */
+  createEvent(data) {
+    return apiRequest(API_ENDPOINTS.EVENT, "post", data);
   },
 };
 

@@ -2,6 +2,7 @@ const API_ENDPOINTS = {
   LOGIN: "/auth/login",
   LOGIN_CODE: "/auth/login-by-code",
   USERS: "/users",
+  EVENT: "/events",
   MY_EVENT: "/events/user",
   // Ajoutez d'autres endpoints ici si nécessaire
 };

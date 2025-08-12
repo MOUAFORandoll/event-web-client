@@ -3,172 +3,18 @@
     <!-- Navbar -->
 
     <!-- Hero Section -->
-    <section class="section section-shaped section-lg my-0 position-relative">
+    <section class="my-0 position-relative">
       <div class="shape shape-style-1 bg-gradient-hero">
         <span></span>
       </div>
       <div class="container pt-lg-md position-relative" style="z-index: 2">
-        <div class="row justify-content-center">
-          <div class="col-lg-8 text-center">
-            <h1
-              class="display-4 text-white font-weight-bold animate__animated animate__fadeInDown mb-5"
-            >
-              Bienvenue,
-              {{ user.first_name || user.last_name }} !
-            </h1>
+        <div class="text-center text-white">
+          <h2 class="font-weight-bold mb-3 text-white">Gérez vos évènements</h2>
+          <p class="mb-0 text-white">event 9</p>
+        </div>
 
-            <span></span>
-            <transition name="fade">
-              <div
-                class="card profile-card shadow-lg border-0 mb-4 mx-auto animate__animated animate__zoomIn"
-              >
-                <div
-                  class="card-body d-flex flex-column align-items-center text-center"
-                >
-                  <img
-                    :src="userPhoto"
-                    alt="Avatar"
-                    class="rounded-circle mb-3"
-                    style="
-                      width: 64px;
-                      height: 64px;
-                      object-fit: cover;
-                      border: 3px solid #fff;
-                      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-                    "
-                  />
-                  <h5 class="card-title mb-3 text-primary">
-                    Prêt à organiser votre prochain événement ?
-                  </h5>
-                  <a
-                    href="#"
-                    class="btn btn-gradient-primary btn-lg"
-                    @click="modalCreateEvent = true"
-                  >
-                    Créez votre évènement
-                  </a>
-                </div>
-              </div>
-            </transition>
-          </div>
-        </div>
-        <modal
-          :show.sync="modalCreateEvent"
-          body-classes="p-0"
-          modal-classes="modal-dialog-centered modal-sm"
-        >
-          <card
-            type="secondary"
-            shadow
-            header-classes="bg-white pb-5"
-            body-classes="px-lg-5 py-lg-5"
-            class="border-0"
-          >
-            <template>
-              <div class="text-center text-muted mb-4">
-                <small>Créer un nouvel évènement</small>
-              </div>
-              <form role="form" @submit.prevent="createEvent">
-                <base-input
-                  alternative
-                  :disabled="loading"
-                  class="mb-3"
-                  placeholder="Nom de l'évènement"
-                  addon-left-icon="ni ni-calendar-grid-58"
-                  v-model="eventForm.name"
-                  required
-                >
-                </base-input>
-                <base-input
-                  alternative
-                  :disabled="loading"
-                  class="mb-3"
-                  type="date"
-                  placeholder="Date"
-                  addon-left-icon="ni ni-calendar-date"
-                  v-model="eventForm.date"
-                  required
-                >
-                </base-input>
-                <base-input
-                  alternative
-                  class="mb-3"
-                  :disabled="loading"
-                  placeholder="Ville"
-                  addon-left-icon="ni ni-pin-3"
-                  v-model="eventForm.location"
-                  required
-                >
-                </base-input>
-                <div class="text-center">
-                  <base-button
-                    type="primary"
-                    class="my-4"
-                    native-type="submit"
-                    :loading="loading"
-                    @submit.prevent="createEvent"
-                    :disabled="loading"
-                  >
-                    Créer l'évènement
-                  </base-button>
-                </div>
-              </form>
-            </template>
-          </card>
-        </modal>
-        <!-- Grid of Cards -->
-        <div class="row mt-5">
-          <transition-group name="card-fade" tag="div" class="row w-100">
-            <div
-              v-for="item in items"
-              :key="item.id"
-              class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch"
-            >
-              <div
-                class="card event-card shadow-lg h-100 border-0 animate__animated animate__fadeInUp"
-              >
-                <div class="event-image-wrapper">
-                  <img
-                    v-if="item.image"
-                    :src="item.image"
-                    class="card-img-top"
-                    :alt="item.title"
-                  />
-                  <div
-                    class="event-badge badge badge-pill badge-info"
-                    v-if="item.badge"
-                  >
-                    {{ item.badge }}
-                  </div>
-                </div>
-                <div class="card-body d-flex flex-column">
-                  <h5 class="card-title font-weight-bold text-primary mb-2">
-                    {{ item.title }}
-                  </h5>
-                  <p class="card-text flex-grow-1 text-muted">
-                    {{ item.description }}
-                  </p>
-                  <a
-                    href="#"
-                    class="btn btn-gradient-primary btn-sm mt-auto align-self-start"
-                  >
-                    <i class="ni ni-curved-next mr-1"></i> Voir plus
-                  </a>
-                </div>
-              </div>
-            </div>
-          </transition-group>
-        </div>
         <!-- End Grid -->
       </div>
-      <!-- Decorative SVG Wave -->
-      <svg class="wave-svg" viewBox="0 0 1440 120" preserveAspectRatio="none">
-        <path
-          d="M0,32L48,53.3C96,75,192,117,288,117.3C384,117,480,75,576,74.7C672,75,768,117,864,128C960,139,1056,117,1152,101.3C1248,85,1344,75,1392,69.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
-          fill="#fff"
-          fill-opacity="1"
-        ></path>
-      </svg>
     </section>
   </div>
 </template>
@@ -188,12 +34,6 @@ export default {
   },
   data() {
     return {
-      eventForm: {
-        name: "",
-        date: "",
-        location: "",
-      },
-      modalCreateEvent: false,
       items: [
         {
           id: 1,
@@ -262,7 +102,7 @@ export default {
             "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80",
         },
       ],
-      userPhoto: "",
+      selectedEvent: "",
       loading: false,
     };
   },

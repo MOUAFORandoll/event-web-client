@@ -15,17 +15,21 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/index";
+
 import store from "./store";
 import Argon from "./plugins/argon-kit";
 import ToastPlugin from "./plugins/toast";
 import "./registerServiceWorker";
-
+import Modal from "@/components/Modal.vue";
 Vue.config.productionTip = false;
+Vue.component("modal", Modal);
 Vue.use(Argon);
 Vue.use(ToastPlugin, { store });
+
 new Vue({
   router,
   store,
